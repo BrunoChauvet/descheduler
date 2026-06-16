@@ -26,7 +26,7 @@ ARCHS = amd64 arm arm64
 
 LDFLAGS=-ldflags "-X ${LDFLAG_LOCATION}.version=${VERSION} -X ${LDFLAG_LOCATION}.buildDate=${BUILD} -X ${LDFLAG_LOCATION}.gitbranch=${BRANCH} -X ${LDFLAG_LOCATION}.gitsha1=${SHA1}"
 
-GOLANGCI_VERSION := v2.8.0
+GOLANGCI_VERSION := v2.12.2
 HAS_GOLANGCI := $(shell ls _output/bin/golangci-lint 2> /dev/null)
 
 GOFUMPT_VERSION := v0.7.0
@@ -146,7 +146,7 @@ verify-gen:
 
 lint:
 ifndef HAS_GOLANGCI
-	curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b ./_output/bin ${GOLANGCI_VERSION}
+	GOBIN=$(CURRENT_DIR)/_output/bin go install github.com/golangci/golangci-lint/v2/cmd/golangci-lint@${GOLANGCI_VERSION}
 endif
 	./_output/bin/golangci-lint run -v
 	./_output/bin/golangci-lint fmt -v
